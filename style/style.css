@@ -1,29 +1,28 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,300);
+
 * {
 	box-sizing: border-box;
 }
 
 html, body {
-	font-family: 'Roboto', sans-serif;
-	font-weight: 300;
 	padding: 0;
 	margin: 0;
 	height: 100%;
-	background-color: #2A2C2B;
+	background-color: #222;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 300;
 }
 
 .center {
-	height:10%;
-	width:20%;
-	position:absolute;
-	left:40%;
-	right:40%;
-	top:45%;
-	bottom:45%;
+	position: relative;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	   -moz-transform: translateY(-50%);
+	        transform: translateY(-50%);
 	text-align:center;
 }
 
-#announce {
+.announcement {
 	color: white;
-	font-size: 50pt;
+	font-size: 64px;
 }
