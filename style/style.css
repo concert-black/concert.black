@@ -23,10 +23,6 @@ html, body {
 	text-align:center;
 }
 
-.centered {
-	margin: 0 auto;
-}
-
 #announce {
 	color: white;
 	font-size: 50pt;
