@@ -16,3 +16,7 @@ html, body {
 .centered {
 	margin: 0 auto;
 }
+
+#announce {
+	color: white;
+}
