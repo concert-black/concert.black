@@ -14,10 +14,13 @@ html, body {
 
 .center {
 	height:10%;
-	position: absolute;
-	top: 45%;
+	width:20%;
+	position:absolute;
+	left:40%;
+	right:40%;
+	top:45%;
 	bottom:45%;
-	text-align: center;
+	text-align:center;
 }
 
 .centered {
