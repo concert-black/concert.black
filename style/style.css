@@ -13,6 +13,15 @@ html, body {
 	font-weight: 300;
 }
 
+body {
+overflow: hidden;
+-moz-user-select: none;
+-webkit-user-select: none;
+-ms-user-select: none;
+-khtml-user-select: none;
+user-select: none;
+}
+
 .center {
 	position: relative;
 	top: 50%;
