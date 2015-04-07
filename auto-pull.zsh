@@ -1,3 +1,3 @@
 #!/bin/zsh
 cd /var/www/html/
-git pull
+git pull https://github.com/concertblack/home.git

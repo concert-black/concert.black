@@ -1,45 +1,65 @@
 // #!/bin/js
 
-scale = 2; // HIDPI support
+scale = 1; // HIDPI support
 
 function init() {
   canvas = document.getElementById('background');
   context = canvas.getContext('2d');
-  canvas.addEventListener('mousedown', mouseDown, false);
-  canvas.addEventListener('mousemove', mouseMove, false);
-  canvas.addEventListener('mouseup', mouseUp, false);
+
+  document.addEventListener('mousedown', mouseDown, false);
+  document.addEventListener('mousemove', mouseMove, false);
+  document.addEventListener('mouseup', mouseUp, false);
+
+  document.addEventListener('touchstart', mouseDown, false);
+  document.addEventListener('touchmove', mouseMove, false);
+  document.addEventListener('touchend', mouseUp, false);
+
+  window.addEventListener('deviceorientation', deviceOrientation, false);
+  window.addEventListener('resize', resize, false);
 
   function size() {
-    canvas.width = window.innerWidth * scale;
-    canvas.height = window.innerHeight * scale;
+    canvas.width = document.body.clientWidth * scale;
+    canvas.height = document.body.clientHeight * scale;
   }
 
   size();
-  window.onresize = function() {
-    size();
-    context.clearRect(0, 0, canvas.width, canvas.height);
-  };
 
-  x = 0;
-  y = 0;
   mouse = false;
 
   function mouseDown(event) {
+    event.preventDefault();
     mouse = true;
+    mouseX = event.pageX * scale;
+    mouseY = event.pageY * scale;
   }
 
   function mouseMove(event) {
-    mouseX = event.clientX * scale;
-    mouseY = event.clientY * scale;
+    event.preventDefault();
+    mouseX = event.pageX * scale;
+    mouseY = event.pageY * scale;
   }
 
   function mouseUp(event) {
+    event.preventDefault();
     mouse = false;
+    mouseX = event.pageX * scale;
+    mouseY = event.pageY * scale;
+  }
+
+  function deviceOrientation(event) {
+    down = Math.atan2(-event.beta, event.gamma) + (Math.PI / 2) + window.orientation * Math.PI/180;
+    strength = Math.sqrt(Math.pow(event.beta, 2) + Math.pow(event.gamma, 2)) / 90;
+  }
+
+  function resize() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    size();
   }
 
   particles = [];
-  fontSize = 96;
-  increase = true;
+  mouse = false;
+  down = 0;
+  strength = 1;
 
   window.requestAnimationFrame(draw);
 }
@@ -49,12 +69,14 @@ setInterval(function () {
     particles[particles.length] = {
       x: mouseX,
       y: mouseY,
+
       radius: Math.random() * 64 + 4,
-      speed: 2,
-      acceleration: 0.1,
-      direction: Math.random() * 360,
-      wander: 0,
-      growth: -0.1,
+
+      speedX: Math.random() * 10 * (Math.floor(Math.random() * 2) ? 1 : -1),
+      speedY: Math.random() * 10 * (Math.floor(Math.random() * 2) ? 1 : -1),
+
+      gravity: 0.5,
+      shrinkage: 0.1,
       alive: true
     }
   }
@@ -63,40 +85,27 @@ setInterval(function () {
 function draw() {
   context.clearRect(0, 0, canvas.width, canvas.height);
   context.globalCompositeOperation = 'xor';
-  context.font = (fontSize * scale) + 'px Montserrat';
+
+  context.font = 96 * scale + 'px Montserrat';
   context.fillStyle = '#ffffff';
   context.textAlign = 'center';
   context.textBaseline = 'middle';
   context.fillText("COMING SOON", canvas.width / 2, canvas.height / 2);
 
-  /*if (fontSize < 96 && increase) {
-    fontSize += 0.05;
-  }
-  if (fontSize >= 96 && increase) {
-    increase = false;
-  }
-  if (fontSize > 64 && !increase) {
-    fontSize -= 0.05;
-  }
-  if (fontSize <= 64 && !increase) {
-    increase = true;
-  }
-
-  animates text size, looks like shit though
-  should figure out how to make it ease better
-
-  */
-
   for (i = 0; i < particles.length; i++) {
+
     if (particles[i].alive) {
+
       context.beginPath();
       context.arc(particles[i].x, particles[i].y, (particles[i].radius * scale), 0, 2 * Math.PI);
       context.fill();
-      particles[i].x += particles[i].speed * Math.sin(particles[i].direction);
-      particles[i].y += particles[i].speed * Math.cos(particles[i].direction);
-      particles[i].speed += particles[i].acceleration;
-      particles[i].direction += Math.random() * particles[i].wander * (Math.floor(Math.random() * 2) == 1 ? 1 : -1);
-      particles[i].radius += particles[i].growth;
+
+      particles[i].x += particles[i].speedX + (particles[i].gravity * strength * Math.sin(down));
+      particles[i].y += particles[i].speedY + (particles[i].gravity * strength * Math.cos(down));
+
+      particles[i].gravity += 0.25;
+      particles[i].radius -= particles[i].shrinkage;
+
       if (particles[i].radius < 0 || !(particles[i].x > -particles[i].radius * scale && particles[i].x < canvas.width + particles[i].radius * scale && particles[i].y > -particles[i].radius * scale && particles[i].y < canvas.height + particles[i].radius * scale)) particles[i].alive = false; // kill particle if out of bounds or has radius less than 0
     }
   }
