@@ -14,7 +14,7 @@ function init() {
   document.addEventListener('touchmove', mouseMove, false);
   document.addEventListener('touchend', mouseUp, false);
 
-  window.addEventListener('deviceorientation', deviceOrientation, false);
+  if (typeof window.orientation != 'undefined') window.addEventListener('deviceorientation', deviceOrientation, false);
   window.addEventListener('resize', resize, false);
 
   function size() {
