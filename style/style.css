@@ -22,6 +22,7 @@ html, body {
 
 .evil {
 	cursor: default;
+	overflow: hidden;
   -webkit-touch-callout: none;
     -webkit-user-select: none;
        -moz-user-select: none;
