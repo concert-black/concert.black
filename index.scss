@@ -1,0 +1,79 @@
+* {
+	box-sizing: border-box;
+}
+@font-face {
+	font-family: "Moon";
+	src: url("font/moon-light.otf");
+	font-weight: normal;
+}
+@font-face {
+	font-family: "Moon";
+	src: url("font/moon-bold.otf");
+	font-weight: bold;
+}
+html, body {
+	margin: 0;
+	height: 100%;
+}
+body {
+	background: black;
+	color: white;
+	font-family: "Moon", sans-serif;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.evil {
+	cursor: default;
+	overflow: hidden;
+	user-select: none;
+}
+
+.logo {
+	@media screen and (max-width: 720px) {
+		font-size: 48px;
+	}
+	font-size: 72px;
+	text-transform: uppercase;
+	animation: scale-in 2s forwards;
+	opacity: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	letter-spacing: 0.05em;
+	background: rgba(0, 0, 0, 0.8);
+	box-shadow: 0 0 32px 32px rgba(0, 0, 0, 0.8);
+	span {
+		margin: 0.2em;
+	}
+	.black {
+		font-weight: bold;
+		border-style: solid;
+		border-color: white;
+		border-width: 0.22em 0.31em 0.15em 0.31em;
+		color: black;
+		background: white;
+	}
+}
+
+#background {
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
+
+@-webkit-keyframes scale-in {
+	from {
+		transform: scale(0.9);
+		opacity: 0;
+	} to {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
